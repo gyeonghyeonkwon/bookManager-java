@@ -47,14 +47,17 @@ public class BookManager{
   public void listOfBooks() {
     System.out.println("==== 도서 목록 ====");
     System.out.println("총 " + books.size() + "권의 도서가 등록되어있습니다.");
-    System.out.println("-".repeat(32));
+    if (books.isEmpty()) {
+      System.out.println("등록된 도서가 없습니다.");
+    }
     for (int i = books.size() - 1; i >= 0; i--) { //최신순
+      System.out.println("-".repeat(32));
       System.out.println("ISBN: " + books.get(i).getIsbn());
       System.out.println("제목: " + books.get(i).getTitle());
       System.out.println("저자: " + books.get(i).getAuthor());
       System.out.println("출판사: " + books.get(i).getPublisher());
       System.out.println("출판년도: " + books.get(i).getDate());
-      System.out.println("-".repeat(30));
+      System.out.println("-".repeat(32));
     }
     sc.nextLine(); //버퍼 지우기
     System.out.println("계속하려면 엔터 키를 누르세요...");
