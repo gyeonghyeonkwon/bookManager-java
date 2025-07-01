@@ -33,6 +33,9 @@ public class App {
       if (menuNumber == 1) {
         bookManager.addBook();
       }
+      if (menuNumber == 2) {
+        bookManager.listOfBooks();
+      }
     }
   }
 }
