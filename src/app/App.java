@@ -28,8 +28,9 @@ public class App {
 
       switch (menuNumber) {
 
-        case 1 ->  bookManager.addBook();
+        case 1 -> bookManager.addBook();
         case 2 -> bookManager.listOfBooks();
+        case 3 -> bookManager.searchKeyword();
         case 6 ->  {
           System.out.println("프로그램을 종료합니다. 감사합니다.");
           return;

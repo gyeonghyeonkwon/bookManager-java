@@ -4,13 +4,13 @@ import java.time.LocalDate;
 
 public class Book {
 
-  int isbn; //고유번호
+  long isbn; //고유번호
   String title; //책이름
   String author; //저자
   String publisher; //출판사
   String date; //출판일
 
-  public Book(int isbn, String title, String author, String publisher, String date) {
+  public Book(long isbn, String title, String author, String publisher, String date) {
     this.isbn = isbn;
     this.title = title;
     this.author = author;
@@ -20,7 +20,7 @@ public class Book {
 
   public Book (){}
 
-  public int getIsbn() {
+  public long getIsbn() {
     return isbn;
   }
 
