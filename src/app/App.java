@@ -2,16 +2,17 @@ package app;
 
 import book.Book;
 import bookmanager.BookManager;
+import console.ConsoleHelper;
 import java.util.Scanner;
 
 public class App {
 
-  private final Scanner sc;
-  private BookManager bookManager;
+  private final ConsoleHelper console;
+  private final BookManager bookManager;
 
-  public App(Scanner sc) {
-    bookManager = new BookManager(sc);
-    this.sc = sc;
+  public App(ConsoleHelper console) {
+    bookManager = new BookManager(console);
+   this.console = console;
   }
   public void run () {
     while (true) {
@@ -22,13 +23,13 @@ public class App {
       System.out.println("4. 도서 정보 수정");
       System.out.println("5. 도서 삭제");
       System.out.println("6. 종료");
-      int menuNumber = bookManager.readInt("메뉴 선택: ");
+      int menuNumber = console.getReadInt("메뉴 선택: ");
 
       switch (menuNumber) {
 
         case 1 -> bookManager.addBook();
         case 2 -> bookManager.listOfBooks();
-        case 3 -> bookManager.searchKeyword();
+        case 3 -> bookManager.searchBook();
         case 6 ->  {
           System.out.println("프로그램을 종료합니다. 감사합니다.");
           return;

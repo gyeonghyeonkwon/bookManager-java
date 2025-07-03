@@ -1,26 +1,28 @@
 package bookmanager;
 
 import book.Book;
+import console.ConsoleHelper;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class BookManager {
 
-  private final Scanner sc;
+  private final ConsoleHelper console;
   private final List<Book> books;
 
-  public BookManager(Scanner sc) {
+  public BookManager(ConsoleHelper console) {
     this.books = new ArrayList<>();
-    this.sc = sc;
+    this.console = console;
   }
+
 
   public void addBook() {
     System.out.println("==== 도서 등록 ====");
     int isbn;
     while (true) {
-      isbn = readInt("번호 입력: ");
-      sc.nextLine(); // 버퍼에 남은 개행문자 제거
+      isbn = console.getReadInt("번호 입력: ");
+      console.getNextLine(); // 버퍼에 남은 개행문자 제거
       if (isDuplicate(isbn)) {
         System.out.println("번호가 중복되었습니다. 번호를 다시 입력해주세요.");
       } else {
@@ -28,10 +30,10 @@ public class BookManager {
       }
     }
 
-    String title = readLine("제목 입력: ");
-    String author = readLine("작가 이름: ");
-    String publisher = readLine("출판사: ");
-    String date = readLine("출판일: ");
+    String title = console.getReadLine("제목 입력: ");
+    String author = console.getReadLine("작가 이름: ");
+    String publisher = console.getReadLine("출판사: ");
+    String date = console.getReadLine("출판일: ");
 
     Book book = new Book(isbn, title, author, publisher, date);
     books.add(book);
@@ -45,22 +47,22 @@ public class BookManager {
       System.out.println("등록된 도서가 없습니다.");
     }
     printBookList(books); //책 전체리스트 출력
-    sc.nextLine();
+    console.getNextLine();
     System.out.println("계속하려면 엔터 키를 누르세요...");
-    sc.nextLine(); //버퍼 지우기
+    console.getNextLine(); //버퍼 지우기
   }
 
-  public void searchKeyword() {
+  public void searchBook() {
     System.out.println("==== 도서 검색 ====");
     System.out.println("검색할 항목 선택");
     System.out.println("1. 제목");
     System.out.println("2. 저자");
     System.out.println("3. ISBN");
 
-    int choice = readInt("선택: ");
-    sc.nextLine();
+    int choice = console.getReadInt("선택: ");
+    console.getNextLine();
 
-    String keyword = readLine("검색어 입력: ");
+    String keyword = console.getReadLine("검색어 입력: ");
 
     List<Book> bookSearchTitleList = new ArrayList<>();//검색된 책목록
 
@@ -73,7 +75,7 @@ public class BookManager {
     System.out.println(">> 검색 결과: " + "(" + bookSearchTitleList.size() + "권" + ")");
     printBookList(bookSearchTitleList);
     System.out.println("계속하려면 엔터 키를 누르세요...");
-    sc.nextLine();
+    console.getNextLine();
   }
 
   private List<Book>searchBooksTitle(String keyword) {
@@ -136,18 +138,5 @@ public class BookManager {
     }
     return false;
   }
-  //scanner 메서드
-  private String readLine(String input) {
-    System.out.print(input);
-    return sc.nextLine();
-  }
 
-  public int readInt(String input) {
-    System.out.print(input);
-    while (!sc.hasNextInt()) { //입력값이 정수가 아닐때 실행
-      System.out.print("숫자를 입력해주세요: ");
-      sc.next();
-    }
-    return sc.nextInt(); //정수일때 반환
-  }
 }
