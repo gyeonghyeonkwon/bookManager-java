@@ -32,6 +32,7 @@ public class App {
         case 2 -> bookManager.listOfBooks();
         case 3 -> bookManager.searchBook();
         case 4 -> bookManager.updateBook();
+        case 5 -> bookManager.removeBooks();
         case 6 ->  {
           System.out.println("프로그램을 종료합니다. 감사합니다.");
           return;

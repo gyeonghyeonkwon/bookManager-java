@@ -44,7 +44,6 @@ public class BookManager {
       System.out.println("등록된 도서가 없습니다.");
     }
     printBookList(books); //책 전체리스트 출력
-    console.getNextLine();
     System.out.println("계속하려면 엔터 키를 누르세요...");
     console.getNextLine(); //버퍼 지우기
   }
@@ -92,6 +91,23 @@ public class BookManager {
         System.out.println(">> 도서 정보가 수정되었습니다.");
       } else {
         System.out.println("도서를 찾을수 없습니다.");
+      }
+    }
+  }
+  public void removeBooks() {
+    int isbn = console.getReadInt("삭제할 도서의 ISBN 입력: ");
+    for (int i = 0; i < books.size(); i++) {
+      Book book = books.get(i);
+      if (book.getIsbn() == isbn) {
+        printBooks(book);
+        String confirm = console.getReadLine("정말 삭제하시겠습니까? (Y/N): ");
+        if (confirm.equals("Y") || confirm.equals("y")) {
+          books.remove(i);
+          System.out.println("도서가 삭제되었습니다.");
+        }
+        else {
+          break;
+        }
       }
     }
   }
