@@ -23,6 +23,7 @@ public class App {
       System.out.println("4. 도서 정보 수정");
       System.out.println("5. 도서 삭제");
       System.out.println("6. 종료");
+
       int menuNumber = console.getReadInt("메뉴 선택: ");
 
       switch (menuNumber) {
@@ -30,6 +31,7 @@ public class App {
         case 1 -> bookManager.addBook();
         case 2 -> bookManager.listOfBooks();
         case 3 -> bookManager.searchBook();
+        case 4 -> bookManager.updateBook();
         case 6 ->  {
           System.out.println("프로그램을 종료합니다. 감사합니다.");
           return;

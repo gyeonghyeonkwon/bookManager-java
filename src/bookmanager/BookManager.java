@@ -4,7 +4,6 @@ import book.Book;
 import console.ConsoleHelper;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class BookManager {
 
@@ -16,13 +15,11 @@ public class BookManager {
     this.console = console;
   }
 
-
   public void addBook() {
     System.out.println("==== 도서 등록 ====");
     int isbn;
     while (true) {
       isbn = console.getReadInt("번호 입력: ");
-      console.getNextLine(); // 버퍼에 남은 개행문자 제거
       if (isDuplicate(isbn)) {
         System.out.println("번호가 중복되었습니다. 번호를 다시 입력해주세요.");
       } else {
@@ -60,7 +57,6 @@ public class BookManager {
     System.out.println("3. ISBN");
 
     int choice = console.getReadInt("선택: ");
-    console.getNextLine();
 
     String keyword = console.getReadLine("검색어 입력: ");
 
@@ -76,6 +72,28 @@ public class BookManager {
     printBookList(bookSearchTitleList);
     System.out.println("계속하려면 엔터 키를 누르세요...");
     console.getNextLine();
+  }
+
+  public void updateBook() {
+    int isbn = console.getReadInt("수정할 도서의 ISBN 입력: ");
+    for (int i = 0; i < books.size(); i++) {
+      Book book = books.get(i);
+      if (book.getIsbn() == isbn) {
+        System.out.println(" >> 현재정보");
+        printBooks(book);
+        String updateTitle = console.getReadOptionalLine("수정할 제목 입력 (수정하지 않으려면 엔터): " , book.getTitle());
+        book.setTitle(updateTitle);
+        String updateAuthor = console.getReadOptionalLine("수정할 작가 입력 (수정하지 않으려면 엔터): " , book.getAuthor());
+        book.setAuthor(updateAuthor);
+        String updatePublisher = console.getReadOptionalLine("수정할 출판사 입력 (수정하지 않으려면 엔터): " , book.getPublisher());
+        book.setPublisher(updatePublisher);
+        String updateDate = console.getReadOptionalLine("수정할 출판일 입력 (수정하지 않으려면 엔터): " , book.getDate());
+        book.setDate(updateDate);
+        System.out.println(">> 도서 정보가 수정되었습니다.");
+      } else {
+        System.out.println("도서를 찾을수 없습니다.");
+      }
+    }
   }
 
   private List<Book>searchBooksTitle(String keyword) {
