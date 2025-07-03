@@ -22,9 +22,7 @@ public class App {
       System.out.println("4. 도서 정보 수정");
       System.out.println("5. 도서 삭제");
       System.out.println("6. 종료");
-      System.out.print("메뉴 선택: ");
-
-      int menuNumber = sc.nextInt();
+      int menuNumber = bookManager.readInt("메뉴 선택: ");
 
       switch (menuNumber) {
 
@@ -35,6 +33,7 @@ public class App {
           System.out.println("프로그램을 종료합니다. 감사합니다.");
           return;
         }
+        default -> System.out.println("입력하신 번호가 존재하지않습니다. 다시입력해주세요.");
       }
     }
   }

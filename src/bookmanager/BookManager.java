@@ -142,7 +142,7 @@ public class BookManager {
     return sc.nextLine();
   }
 
-  private int readInt(String input) {
+  public int readInt(String input) {
     System.out.print(input);
     while (!sc.hasNextInt()) { //입력값이 정수가 아닐때 실행
       System.out.print("숫자를 입력해주세요: ");
