@@ -74,45 +74,58 @@ public class BookManager {
   }
 
   public void updateBook() {
-    int isbn = console.getReadInt("수정할 도서의 ISBN 입력: ");
-    for (int i = 0; i < books.size(); i++) {
-      Book book = books.get(i);
-      if (book.getIsbn() == isbn) {
-        System.out.println(" >> 현재정보");
-        printBooks(book);
-        String updateTitle = console.getReadOptionalLine("수정할 제목 입력 (수정하지 않으려면 엔터): " , book.getTitle());
-        book.setTitle(updateTitle);
-        String updateAuthor = console.getReadOptionalLine("수정할 작가 입력 (수정하지 않으려면 엔터): " , book.getAuthor());
-        book.setAuthor(updateAuthor);
-        String updatePublisher = console.getReadOptionalLine("수정할 출판사 입력 (수정하지 않으려면 엔터): " , book.getPublisher());
-        book.setPublisher(updatePublisher);
-        String updateDate = console.getReadOptionalLine("수정할 출판일 입력 (수정하지 않으려면 엔터): " , book.getDate());
-        book.setDate(updateDate);
-        System.out.println(">> 도서 정보가 수정되었습니다.");
-      } else {
-        System.out.println("도서를 찾을수 없습니다.");
-      }
+    long isbn = console.getReadInt("수정할 도서의 ISBN 입력: ");
+    Book book = findByBook(isbn);
+
+    if (book == null) {
+      System.out.println("도서를 찾을수 없습니다.");
+      return;
     }
+
+    System.out.println(" >> 현재정보");
+    printBooks(book);
+    String updateTitle = console.getReadOptionalLine("수정할 제목 입력 (수정하지 않으려면 엔터): ",
+        book.getTitle());
+    book.setTitle(updateTitle);
+    String updateAuthor = console.getReadOptionalLine("수정할 작가 입력 (수정하지 않으려면 엔터): ",
+        book.getAuthor());
+    book.setAuthor(updateAuthor);
+    String updatePublisher = console.getReadOptionalLine("수정할 출판사 입력 (수정하지 않으려면 엔터): ",
+        book.getPublisher());
+    book.setPublisher(updatePublisher);
+    String updateDate = console.getReadOptionalLine("수정할 출판일 입력 (수정하지 않으려면 엔터): ",
+        book.getDate());
+    book.setDate(updateDate);
+    System.out.println(">> 도서 정보가 수정되었습니다.");
   }
+
   public void removeBooks() {
     int isbn = console.getReadInt("삭제할 도서의 ISBN 입력: ");
-    for (int i = 0; i < books.size(); i++) {
-      Book book = books.get(i);
-      if (book.getIsbn() == isbn) {
-        printBooks(book);
-        String confirm = console.getReadLine("정말 삭제하시겠습니까? (Y/N): ");
-        if (confirm.equals("Y") || confirm.equals("y")) {
-          books.remove(i);
-          System.out.println("도서가 삭제되었습니다.");
-        }
-        else {
-          break;
-        }
-      }
+    Book book = findByBook(isbn);
+
+    if (book == null) {
+      System.out.println("도서를 찾을수 없습니다.");
+      return;
+    }
+    printBooks(book);
+    String confirm = console.getReadLine("정말 삭제하시겠습니까? (Y/N): ");
+    if (confirm.equals("Y") || confirm.equals("y")) {
+      books.remove(book);
+      System.out.println("도서가 삭제되었습니다.");
     }
   }
 
-  private List<Book>searchBooksTitle(String keyword) {
+  private Book findByBook(long isbn) {
+    for (int i = 0; i < books.size(); i++) {
+      Book book = books.get(i);
+      if (book.getIsbn() == isbn) {
+        return book;
+      }
+    }
+    return null;
+  }
+
+  private List<Book> searchBooksTitle(String keyword) {
     List<Book> searchTitle = new ArrayList<>();
     for (int i = 0; i < books.size(); i++) {
       Book book = books.get(i); //책목록에 있는 책을 하나씩 꺼냄

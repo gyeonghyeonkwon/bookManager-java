@@ -1,9 +1,7 @@
 package app;
 
-import book.Book;
 import bookmanager.BookManager;
 import console.ConsoleHelper;
-import java.util.Scanner;
 
 public class App {
 
