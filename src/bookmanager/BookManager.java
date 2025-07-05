@@ -60,6 +60,10 @@ public class BookManager {
     String keyword = console.getReadLine("검색어 입력: ");
 
     List<Book> bookSearchTitleList = new ArrayList<>();//검색된 책목록
+    if (bookSearchTitleList.isEmpty()) {
+      System.out.println("도서를 찾을수 없습니다.");
+      return;
+    }
 
     switch (choice) {
       case 1 -> bookSearchTitleList = searchBooksTitle(keyword); //검색결과 책리스트
@@ -116,8 +120,7 @@ public class BookManager {
   }
 
   private Book findByBook(long isbn) {
-    for (int i = 0; i < books.size(); i++) {
-      Book book = books.get(i);
+    for (Book book : books) {
       if (book.getIsbn() == isbn) {
         return book;
       }
@@ -127,8 +130,7 @@ public class BookManager {
 
   private List<Book> searchBooksTitle(String keyword) {
     List<Book> searchTitle = new ArrayList<>();
-    for (int i = 0; i < books.size(); i++) {
-      Book book = books.get(i); //책목록에 있는 책을 하나씩 꺼냄
+    for (Book book : books) {
       if (book.getTitle().contains(keyword)) { //검색어에 존재하는 제목의 책을 찾아서
         searchTitle.add(book); //다시 리스트에 담는다.
       }
@@ -138,8 +140,7 @@ public class BookManager {
 
   private List<Book> searchBooksAuthor(String keyword) {
     List<Book> searchAuthor = new ArrayList<>();
-    for (int i = 0; i < books.size(); i++) {
-      Book book = books.get(i); //책목록에 있는 책을 하나씩 꺼냄
+    for (Book book : books) { //책목록에 있는 책을 하나씩 꺼냄
       if (book.getAuthor().contains(keyword)) { //검색어에 존재하는 제목의 책을 찾아서
         searchAuthor.add(book); //다시 리스트에 담는다.
       }
@@ -148,10 +149,8 @@ public class BookManager {
   }
 
   private List<Book> searchBooksIsbn(String keyword) {
-
     List<Book> searchIsbn = new ArrayList<>();
-    for (int i = 0; i < books.size(); i++) {
-      Book book = books.get(i); //책목록에 있는 책을 하나씩 꺼냄
+    for (Book book : books) { //책목록에 있는 책을 하나씩 꺼냄
       String isbn = String.valueOf(book.getIsbn());
       if (isbn.equals(keyword)) { //검색어에 존재하는 제목의 책을 찾아서
         searchIsbn.add(book); //다시 리스트에 담는다.
@@ -178,12 +177,11 @@ public class BookManager {
 
   //리스트에 고유번호가 중복되면 true
   private boolean isDuplicate(int isbn) {
-    for (int i = 0; i < books.size(); i++) {
-      if (books.get(i).getIsbn() == isbn) {
+    for (Book book : books) {
+      if (book.getIsbn() == isbn) {
         return true;
       }
     }
     return false;
   }
-
 }
