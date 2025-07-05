@@ -3,6 +3,7 @@ package bookmanager;
 import book.Book;
 import console.ConsoleHelper;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class BookManager {
@@ -160,9 +161,9 @@ public class BookManager {
   }
 
   private void printBookList(List<Book> bookList) {
-    for (int i = bookList.size() - 1; i >= 0; i--) { //최신순
-      printBooks(bookList.get(i));
-    }
+    List<Book> copyList = new ArrayList<>(bookList);
+    Collections.reverse(copyList); //역순
+    bookList.stream().forEach(this::printBooks);
   }
 
   private void printBooks(Book book) {
