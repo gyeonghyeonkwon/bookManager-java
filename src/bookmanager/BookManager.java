@@ -63,10 +63,7 @@ public class BookManager {
     String keyword = console.getReadLine("검색어 입력: ");
 
     List<Book> bookSearchList = new ArrayList<>();//검색된 책목록
-    if (bookSearchList.isEmpty()) {
-      System.out.println("도서를 찾을수 없습니다.");
-      return;
-    }
+
 
     switch (choice) {
       case 1 -> bookSearchList = searchBooksTitle(keyword); //검색결과 책리스트
@@ -75,6 +72,9 @@ public class BookManager {
       default -> System.out.println("번호를 다시 입력해주세요.");
     }
     System.out.println(">> 검색 결과: " + "(" + bookSearchList.size() + "권" + ")");
+    if (bookSearchList.isEmpty()) {
+      System.out.println("도서를 찾을수 없습니다.");
+    }
     printBookList(bookSearchList);
     System.out.println("계속하려면 엔터 키를 누르세요...");
     console.getNextLine();
@@ -132,23 +132,15 @@ public class BookManager {
   }
 
   private List<Book> searchBooksTitle(String keyword) {
-    List<Book> searchTitle = new ArrayList<>();
-    for (Book book : books) {
-      if (book.getTitle().contains(keyword)) { //검색어에 존재하는 제목의 책을 찾아서
-        searchTitle.add(book); //다시 리스트에 담는다.
-      }
-    }
-    return searchTitle;
+    return books.stream()
+        .filter(book -> book.getTitle().equals(keyword))
+        .collect(Collectors.toList());
   }
 
   private List<Book> searchBooksAuthor(String keyword) {
-    List<Book> searchAuthor = new ArrayList<>();
-    for (Book book : books) { //책목록에 있는 책을 하나씩 꺼냄
-      if (book.getAuthor().contains(keyword)) { //검색어에 존재하는 제목의 책을 찾아서
-        searchAuthor.add(book); //다시 리스트에 담는다.
-      }
-    }
-    return searchAuthor;
+    return books.stream()
+        .filter(book -> book.getAuthor().equals(keyword))
+        .collect(Collectors.toList());
   }
 
   private List<Book> searchBooksIsbn(String keyword) {
