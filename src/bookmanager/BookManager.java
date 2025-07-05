@@ -123,12 +123,11 @@ public class BookManager {
   }
 
   private Book findByBook(long isbn) {
-    for (Book book : books) {
-      if (book.getIsbn() == isbn) {
-        return book;
-      }
-    }
-    return null;
+    //isbn이 없으면 null 반환
+    return books.stream()
+        .filter(book -> book.getIsbn() == isbn)
+        .findFirst() //optional로 반환
+        .orElse(null);
   }
 
   private List<Book> searchBooksTitle(String keyword) {
