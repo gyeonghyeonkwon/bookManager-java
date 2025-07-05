@@ -5,6 +5,8 @@ import console.ConsoleHelper;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class BookManager {
 
@@ -60,20 +62,20 @@ public class BookManager {
 
     String keyword = console.getReadLine("검색어 입력: ");
 
-    List<Book> bookSearchTitleList = new ArrayList<>();//검색된 책목록
-    if (bookSearchTitleList.isEmpty()) {
+    List<Book> bookSearchList = new ArrayList<>();//검색된 책목록
+    if (bookSearchList.isEmpty()) {
       System.out.println("도서를 찾을수 없습니다.");
       return;
     }
 
     switch (choice) {
-      case 1 -> bookSearchTitleList = searchBooksTitle(keyword); //검색결과 책리스트
-      case 2 -> bookSearchTitleList = searchBooksAuthor(keyword);
-      case 3 -> bookSearchTitleList = searchBooksIsbn(keyword);
+      case 1 -> bookSearchList = searchBooksTitle(keyword); //검색결과 책리스트
+      case 2 -> bookSearchList = searchBooksAuthor(keyword);
+      case 3 -> bookSearchList = searchBooksIsbn(keyword);
       default -> System.out.println("번호를 다시 입력해주세요.");
     }
-    System.out.println(">> 검색 결과: " + "(" + bookSearchTitleList.size() + "권" + ")");
-    printBookList(bookSearchTitleList);
+    System.out.println(">> 검색 결과: " + "(" + bookSearchList.size() + "권" + ")");
+    printBookList(bookSearchList);
     System.out.println("계속하려면 엔터 키를 누르세요...");
     console.getNextLine();
   }
@@ -150,14 +152,9 @@ public class BookManager {
   }
 
   private List<Book> searchBooksIsbn(String keyword) {
-    List<Book> searchIsbn = new ArrayList<>();
-    for (Book book : books) { //책목록에 있는 책을 하나씩 꺼냄
-      String isbn = String.valueOf(book.getIsbn());
-      if (isbn.equals(keyword)) { //검색어에 존재하는 제목의 책을 찾아서
-        searchIsbn.add(book); //다시 리스트에 담는다.
-      }
-    }
-    return searchIsbn;
+    return books.stream()
+        .filter(book -> String.valueOf(book.getIsbn()).equals(keyword)) //조건문
+        .collect(Collectors.toList()); //새로운 리스트에 담아서 반환
   }
 
   private void printBookList(List<Book> bookList) {
