@@ -163,7 +163,7 @@ public class BookManager {
   private void printBookList(List<Book> bookList) {
     List<Book> copyList = new ArrayList<>(bookList);
     Collections.reverse(copyList); //역순
-    bookList.stream().forEach(this::printBooks);
+    copyList.stream().forEach(this::printBooks);
   }
 
   private void printBooks(Book book) {
@@ -178,11 +178,7 @@ public class BookManager {
 
   //리스트에 고유번호가 중복되면 true
   private boolean isDuplicate(int isbn) {
-    for (Book book : books) {
-      if (book.getIsbn() == isbn) {
-        return true;
-      }
-    }
-    return false;
+    return books.stream()
+        .anyMatch(book -> book.getIsbn() == isbn);
   }
 }
