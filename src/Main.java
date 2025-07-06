@@ -8,7 +8,6 @@ import java.util.Scanner;
 public class Main {
 
   public static void main(String[] args){
-    new Jdbc();
     ConsoleHelper console = new ConsoleHelper(new Scanner(System.in));
     App app = new App(console);
     app.run();

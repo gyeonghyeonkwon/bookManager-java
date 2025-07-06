@@ -8,9 +8,9 @@ import javax.print.DocFlavor.STRING;
 
 public class Jdbc  {
 
-  String url = "jdbc:mysql://localhost:3306/book";
-  String user = "root";
-  String password = "1234";
+  private static final String url = "jdbc:mysql://localhost:3306/book";
+  private static final String user = "root";
+  private static final String password = "1234";
 
   public Jdbc() {
     try {
@@ -21,9 +21,9 @@ public class Jdbc  {
     }
   }
   // 연결 반환
-  public Connection getConnection() throws SQLException {
+  public static Connection getConnection() throws SQLException {
     Connection con = DriverManager.getConnection(url, user, password);
-    System.out.println("데이터베이스 접속 성공!");
+//    System.out.println("데이터베이스 접속 성공!");
     return con;
   }
 }

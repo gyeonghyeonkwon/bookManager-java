@@ -5,6 +5,7 @@ import console.ConsoleHelper;
 import database.Jdbc;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,7 +27,7 @@ public class BookManager {
     System.out.println("==== 도서 등록 ====");
     String sql = "INSERT INTO books (isbn, title, author, publisher, publish_date) VALUES (?, ?, ?, ?, ?)";
     try {
-      Connection con = new Jdbc().getConnection();
+      Connection con = Jdbc.getConnection();
       PreparedStatement pstmt = con.prepareStatement(sql);
 
       long isbn = console.getReadInt("번호 입력: ");
@@ -52,13 +53,48 @@ public class BookManager {
 
   public void listOfBooks() {
     System.out.println("==== 도서 목록 ====");
-    System.out.println("총 " + books.size() + "권의 도서가 등록되어있습니다.");
-    if (books.isEmpty()) {
-      System.out.println("등록된 도서가 없습니다.");
+    String sql = "select * from books";
+    System.out.println("총 " + getTotalCount() + "권의 도서가 등록되어 있습니다.");
+    try {
+      Connection con = Jdbc.getConnection();
+      PreparedStatement pstmt = con.prepareStatement(sql);
+      ResultSet rs = pstmt.executeQuery();
+      System.out.println("------------------------");
+      while (rs.next()) {
+        int isbn = rs.getInt("isbn");
+        String title = rs.getString("title");
+        String author = rs.getString("author");
+        String publisher = rs.getString("publisher");
+        String publishDate = rs.getString("publish_date");
+
+        System.out.println("ISBN: " + isbn);
+        System.out.println("제목: " + title);
+        System.out.println("저자: " + author);
+        System.out.println("출판사: " + publisher);
+        System.out.println("출판일: " + publishDate);
+        System.out.println("------------------------");
+      }
+
+    } catch (SQLException e) {
+      e.printStackTrace();
     }
-    printBookList(books); //책 전체리스트 출력
-    System.out.println("계속하려면 엔터 키를 누르세요...");
-    console.getNextLine(); //버퍼 지우기
+  }
+  //데이터 갯수
+  private int getTotalCount() {
+    String sql = "select count(*) from books";
+    int count = 0;
+    try {
+      Connection con = Jdbc.getConnection();
+      PreparedStatement pstmt = con.prepareStatement(sql);
+      ResultSet rs = pstmt.executeQuery();
+
+      if (rs.next()) {
+        count = rs.getInt(1);
+      }
+    }catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return count;
   }
 
   public void searchBook() {
