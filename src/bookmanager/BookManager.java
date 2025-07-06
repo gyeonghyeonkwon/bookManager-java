@@ -53,7 +53,7 @@ public class BookManager {
 
   public void listOfBooks() {
     System.out.println("==== 도서 목록 ====");
-    String sql = "select * from books";
+    String sql = "select * from books order by publish_date desc";
     System.out.println("총 " + getTotalCount() + "권의 도서가 등록되어 있습니다.");
     try {
       Connection con = Jdbc.getConnection();
@@ -61,7 +61,7 @@ public class BookManager {
       ResultSet rs = pstmt.executeQuery();
       System.out.println("------------------------");
       while (rs.next()) {
-        int isbn = rs.getInt("isbn");
+        long isbn = rs.getLong("isbn");
         String title = rs.getString("title");
         String author = rs.getString("author");
         String publisher = rs.getString("publisher");
@@ -74,10 +74,11 @@ public class BookManager {
         System.out.println("출판일: " + publishDate);
         System.out.println("------------------------");
       }
-
     } catch (SQLException e) {
       e.printStackTrace();
     }
+    System.out.println("계속하려면 엔터 키를 누르세요...");
+    console.getNextLine();
   }
   //데이터 갯수
   private int getTotalCount() {
