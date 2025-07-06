@@ -2,6 +2,10 @@ package bookmanager;
 
 import book.Book;
 import console.ConsoleHelper;
+import database.Jdbc;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -20,23 +24,29 @@ public class BookManager {
 
   public void addBook() {
     System.out.println("==== 도서 등록 ====");
-    int isbn;
-    while (true) {
-      isbn = console.getReadInt("번호 입력: ");
-      if (isDuplicate(isbn)) {
-        System.out.println("번호가 중복되었습니다. 번호를 다시 입력해주세요.");
-      } else {
-        break;
-      }
+    String sql = "INSERT INTO books (isbn, title, author, publisher, publish_date) VALUES (?, ?, ?, ?, ?)";
+    try {
+      Connection con = new Jdbc().getConnection();
+      PreparedStatement pstmt = con.prepareStatement(sql);
+
+      long isbn = console.getReadInt("번호 입력: ");
+      String title = console.getReadLine("제목 입력: ");
+      String author = console.getReadLine("작가 이름: ");
+      String publisher = console.getReadLine("출판사: ");
+      String date = console.getReadLine("출판일: ");
+
+      pstmt.setLong(1, isbn);
+      pstmt.setString(2, title);
+      pstmt.setString(3, author);
+      pstmt.setString(4, publisher);
+      pstmt.setString(5, date);
+
+      int rows = pstmt.executeUpdate();
+      System.out.println("등록된 책 개수: " + rows);
+
+    } catch (SQLException e) {
+      e.printStackTrace();
     }
-
-    String title = console.getReadLine("제목 입력: ");
-    String author = console.getReadLine("작가 이름: ");
-    String publisher = console.getReadLine("출판사: ");
-    String date = console.getReadLine("출판일: ");
-
-    Book book = new Book(isbn, title, author, publisher, date);
-    books.add(book);
     System.out.println("도서가 성공적으로 등록되었습니다.");
   }
 
@@ -63,7 +73,6 @@ public class BookManager {
     String keyword = console.getReadLine("검색어 입력: ");
 
     List<Book> bookSearchList = new ArrayList<>();//검색된 책목록
-
 
     switch (choice) {
       case 1 -> bookSearchList = searchBooksTitle(keyword); //검색결과 책리스트
